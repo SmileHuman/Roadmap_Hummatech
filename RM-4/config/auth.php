@@ -42,6 +42,10 @@ return [
             'driver' => 'session',
             'provider' => 'users',
         ],
+        'api' => [
+            'driver' => 'jwt',
+            'provider' => 'api_jwt'
+        ],
     ],
 
     /*
@@ -65,6 +69,10 @@ return [
         'users' => [
             'driver' => 'eloquent',
             'model' => env('AUTH_MODEL', User::class),
+        ],
+        'api_jwt' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\ModelAkun::class,
         ],
 
         // 'users' => [
