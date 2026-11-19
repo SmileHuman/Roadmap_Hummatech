@@ -9,7 +9,16 @@ class SiswaController extends Controller
 {
     public function index()
     {
-        return ModelSiswa::all();
+        ModelSiswa::chunkById(
+            10,
+            function($siswas){
+                foreach($siswas as $siswa){
+                    return response()->json([
+                        'nisn' => $siswa->nisn,
+                            'nama' => $siswa->nama,
+                            'kelas' => $siswa->kelas,
+                    ]);
+        }});
         // $data = ModelSiswa::all();
         // return response()->json([
         //     'data' => $data

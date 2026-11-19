@@ -54,22 +54,4 @@ class AuthController extends Controller
         'token_type' => 'bearer'
     ]);
 }
-
-// public function login(Request $request)
-// {
-//     $credentials = $request->only('email', 'password');
-
-//     $token = Auth::guard('api')->attempt($credentials);
-
-//     if (!$token) {
-//         return response()->json([
-//             'message' => 'Login gagal'
-//         ], 401);
-//     }
-
-//     return response()->json([
-//         'access_token' => $token,
-//         'token_type' => 'bearer'
-//     ]);
-// }
 }
