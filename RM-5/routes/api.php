@@ -1,12 +1,6 @@
 <?php
 
-use App\Http\Controllers\AuthController;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\SiswaController;
 
-Route::post('/register', [AuthController::class, 'register']);
-Route::post('/login', [AuthController::class, 'login']);
-
-Route::middleware('auth_token')->group(function(){
-// Route::resource('siswa');
-});
+Route::resource('siswa', SiswaController::class);
