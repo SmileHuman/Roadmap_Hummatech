@@ -7,7 +7,6 @@ use Illuminate\Http\Request;
 
 class SiswaController extends Controller
 {
-    // MENAMPILKAN SEMUA SISWA
     public function index()
     {
         $data = ModelSiswa::all();
@@ -17,7 +16,6 @@ class SiswaController extends Controller
         ], 200);
     }
 
-    // MENAMPILKAN SISWA BERDASARKAN ID
     public function show(string $id)
     {
         $data = ModelSiswa::find($id);
@@ -33,7 +31,6 @@ class SiswaController extends Controller
         ], 200);
     }
 
-    // MENAMBAHKAN SISWA
     public function store(Request $request)
     {
         $validated = $request->validate([
@@ -50,7 +47,6 @@ class SiswaController extends Controller
         ], 201);
     }
 
-    // MEMPERBARUI SISWA
     public function update(Request $request, string $id)
     {
         $data = ModelSiswa::find($id);
@@ -75,7 +71,6 @@ class SiswaController extends Controller
         ], 200);
     }
 
-    // MENGHAPUS SISWA
     public function destroy(string $id)
     {
         $data = ModelSiswa::find($id);

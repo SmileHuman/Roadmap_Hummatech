@@ -9,7 +9,6 @@ use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
 {
-    // REGISTER
     public function register(Request $request)
     {
         $validated = $request->validate([
@@ -30,7 +29,6 @@ class AuthController extends Controller
         ], 201);
     }
 
-    // LOGIN
     public function login(Request $request)
     {
         $credentials = $request->validate([
@@ -49,7 +47,6 @@ class AuthController extends Controller
         return $this->respondWithToken($token);
     }
 
-    // MELIHAT AKUN YANG SEDANG LOGIN
     public function me()
     {
         return response()->json([
@@ -57,7 +54,6 @@ class AuthController extends Controller
         ], 200);
     }
 
-    // LOGOUT
     public function logout()
     {
         auth('api')->logout();
@@ -67,7 +63,6 @@ class AuthController extends Controller
         ], 200);
     }
 
-    // REFRESH TOKEN
     public function refresh()
     {
         $token = auth('api')->refresh();
@@ -75,7 +70,6 @@ class AuthController extends Controller
         return $this->respondWithToken($token);
     }
 
-    // FORMAT RESPONSE TOKEN
     protected function respondWithToken($token)
     {
         return response()->json([
