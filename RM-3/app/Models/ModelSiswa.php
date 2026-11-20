@@ -11,6 +11,6 @@ class ModelSiswa extends Model
     protected $fillable = [
         'nisn',
         'nama',
-        'kelas',
+        'kelas'
     ];
 }
