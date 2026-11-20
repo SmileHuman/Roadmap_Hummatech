@@ -6,52 +6,82 @@ use App\Http\Controllers\Controller;
 use App\Models\ModelAkun;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Auth;
 
 class AuthController extends Controller
 {
-    public function register(Request $request){
-        $validate = $request->validate([
-            'email' => 'required|email',
-            'password' => 'required|min:5'
+    // REGISTER
+    public function register(Request $request)
+    {
+        $validated = $request->validate([
+            'email' => 'required|email|unique:users_akun,email',
+            'password' => 'required|string|min:5'
         ]);
 
-        $cekAkun = ModelAkun::where('email', $validate['email'])->first();
+        $validated['password'] = Hash::make($validated['password']);
 
-        if($cekAkun){
-            return response()->json([
-                'message' => 'akun sudah terdaftar'
-            ]);
-        }
-        
-        $validate['password'] = Hash::make($validate['password']);
-
-        ModelAkun::create($validate);
+        $akun = ModelAkun::create($validated);
 
         return response()->json([
-            'message' => 'registrasi berhasil',
-            'data' => $validate
-        ]);
+            'message' => 'Registrasi berhasil',
+            'data' => [
+                'id' => $akun->id,
+                'email' => $akun->email
+            ]
+        ], 201);
     }
 
+    // LOGIN
     public function login(Request $request)
-{
-    $credentials = $request->only(
-        'email',
-        'password'
-    );
+    {
+        $credentials = $request->validate([
+            'email' => 'required|email',
+            'password' => 'required|string'
+        ]);
 
-    $token = auth::guard('api')->attempt($credentials);
+        $token = auth('api')->attempt($credentials);
 
-    if (!$token) {
-        return response()->json([
-            'message' => 'Login gagal'
-        ], 401);
+        if (!$token) {
+            return response()->json([
+                'message' => 'Email atau password salah'
+            ], 401);
+        }
+
+        return $this->respondWithToken($token);
     }
 
-    return response()->json([
-        'access_token' => $token,
-        'token_type' => 'bearer'
-    ]);
-}
+    // MELIHAT AKUN YANG SEDANG LOGIN
+    public function me()
+    {
+        return response()->json([
+            'data' => auth('api')->user()
+        ], 200);
+    }
+
+    // LOGOUT
+    public function logout()
+    {
+        auth('api')->logout();
+
+        return response()->json([
+            'message' => 'Logout berhasil'
+        ], 200);
+    }
+
+    // REFRESH TOKEN
+    public function refresh()
+    {
+        $token = auth('api')->refresh();
+
+        return $this->respondWithToken($token);
+    }
+
+    // FORMAT RESPONSE TOKEN
+    protected function respondWithToken($token)
+    {
+        return response()->json([
+            'access_token' => $token,
+            'token_type' => 'bearer',
+            'expires_in' => auth('api')->factory()->getTTL() * 60
+        ], 200);
+    }
 }

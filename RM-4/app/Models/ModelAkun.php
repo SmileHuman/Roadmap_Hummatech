@@ -2,23 +2,23 @@
 
 namespace App\Models;
 
-use Illuminate\Auth\Middleware\Authenticate;
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Foundation\Auth\User as Authenticatable;
 use PHPOpenSourceSaver\JWTAuth\Contracts\JWTSubject;
-use App\Models\User as Authenticatable;
-use Laravel\Sanctum\HasApiTokens;
 
 class ModelAkun extends Authenticatable implements JWTSubject
 {
-    use HasApiTokens;
     protected $table = 'users_akun';
 
     protected $fillable = [
         'email',
-        'password'
+        'password',
     ];
 
-     public function getJWTIdentifier()
+    protected $hidden = [
+        'password',
+    ];
+
+    public function getJWTIdentifier()
     {
         return $this->getKey();
     }

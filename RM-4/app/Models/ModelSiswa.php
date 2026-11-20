@@ -6,10 +6,11 @@ use Illuminate\Database\Eloquent\Model;
 
 class ModelSiswa extends Model
 {
-    protected $table = 'users_akun';
+    protected $table = 'data_siswa';
 
     protected $fillable = [
+        'nisn',
         'nama',
-        'nilai'
+        'kelas'
     ];
 }
