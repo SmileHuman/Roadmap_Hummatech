@@ -6,19 +6,20 @@ use App\Http\Controllers\Controller;
 use App\Models\ModelAkun;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use PHPOpenSourceSaver\JWTAuth\Facades\JWTAuth;
 
 class AuthController extends Controller
 {
     public function register(Request $request)
     {
-        $validated = $request->validate([
+        $data = $request->validate([
             'email' => 'required|email|unique:users_akun,email',
-            'password' => 'required|string|min:5'
+            'password' => 'required|string|min:8'
         ]);
 
-        $validated['password'] = Hash::make($validated['password']);
+        $data['password'] = Hash::make($data['password']);
 
-        $akun = ModelAkun::create($validated);
+        $akun = ModelAkun::create($data);
 
         return response()->json([
             'message' => 'Registrasi berhasil',
@@ -29,53 +30,27 @@ class AuthController extends Controller
         ], 201);
     }
 
-    public function login(Request $request)
-    {
-        $credentials = $request->validate([
-            'email' => 'required|email',
-            'password' => 'required|string'
-        ]);
+    
+public function login(Request $request)
+{
+    $credentials = $request->validate([
+        'email' => 'required|email',
+        'password' => 'required|string'
+    ]);
 
-        $token = auth('api')->attempt($credentials);
+    $token = auth('api')->attempt($credentials);
 
-        if (!$token) {
-            return response()->json([
-                'message' => 'Email atau password salah'
-            ], 401);
-        }
-
-        return $this->respondWithToken($token);
-    }
-
-    public function me()
-    {
+    if (!$token) {
         return response()->json([
-            'data' => auth('api')->user()
-        ], 200);
+            'message' => 'Email atau password salah'
+        ], 401);
     }
 
-    public function logout()
-    {
-        auth('api')->logout();
+    return response()->json([
+        'message' => 'Login berhasil',
+        'access_token' => $token,
+        'token_type' => 'bearer'
+    ], 200);
+}
 
-        return response()->json([
-            'message' => 'Logout berhasil'
-        ], 200);
-    }
-
-    public function refresh()
-    {
-        $token = auth('api')->refresh();
-
-        return $this->respondWithToken($token);
-    }
-
-    protected function respondWithToken($token)
-    {
-        return response()->json([
-            'access_token' => $token,
-            'token_type' => 'bearer',
-            'expires_in' => auth('api')->factory()->getTTL() * 60
-        ], 200);
-    }
 }

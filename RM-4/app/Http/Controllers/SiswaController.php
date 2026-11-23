@@ -4,84 +4,82 @@ namespace App\Http\Controllers;
 
 use App\Models\ModelSiswa;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 
 class SiswaController extends Controller
 {
     public function index()
     {
-        $data = ModelSiswa::all();
-
         return response()->json([
-            'data' => $data
+            'data' => ModelSiswa::all()
         ], 200);
     }
 
     public function show(string $id)
     {
-        $data = ModelSiswa::find($id);
+        $siswa = ModelSiswa::find($id);
 
-        if (!$data) {
+        if (!$siswa) {
             return response()->json([
                 'message' => 'Data siswa tidak ditemukan'
             ], 404);
         }
 
         return response()->json([
-            'data' => $data
+            'data' => $siswa
         ], 200);
     }
 
     public function store(Request $request)
     {
-        $validated = $request->validate([
-            'nisn' => 'required|string',
+        $data = $request->validate([
+            'nisn' => 'required|string|unique:data_siswa,nisn',
             'nama' => 'required|string',
-            'kelas' => 'required|string'
+            'nilai' => 'required|numeric'
         ]);
 
-        $data = ModelSiswa::create($validated);
+        $siswa = ModelSiswa::create($data);
 
         return response()->json([
             'message' => 'Data siswa berhasil ditambahkan',
-            'data' => $data
+            'data' => $siswa
         ], 201);
     }
 
     public function update(Request $request, string $id)
     {
-        $data = ModelSiswa::find($id);
+        $siswa = ModelSiswa::find($id);
 
-        if (!$data) {
+        if (!$siswa) {
             return response()->json([
                 'message' => 'Data siswa tidak ditemukan'
             ], 404);
         }
 
-        $validated = $request->validate([
-            'nisn' => 'required|string',
+        $data = $request->validate([
             'nama' => 'required|string',
-            'kelas' => 'required|string'
+            'nilai' => 'required|numeric'
         ]);
 
-        $data->update($validated);
+        $siswa->update($data);
 
         return response()->json([
             'message' => 'Data siswa berhasil diperbarui',
-            'data' => $data
+            'data' => $siswa
         ], 200);
     }
 
     public function destroy(string $id)
     {
-        $data = ModelSiswa::find($id);
+        $siswa = ModelSiswa::find($id);
 
-        if (!$data) {
+        if (!$siswa) {
             return response()->json([
                 'message' => 'Data siswa tidak ditemukan'
             ], 404);
         }
 
-        $data->delete();
+        $siswa->delete();
 
         return response()->json([
             'message' => 'Data siswa berhasil dihapus'

@@ -11,11 +11,11 @@ class ModelAkun extends Authenticatable implements JWTSubject
 
     protected $fillable = [
         'email',
-        'password',
+        'password'
     ];
 
     protected $hidden = [
-        'password',
+        'password'
     ];
 
     public function getJWTIdentifier()
