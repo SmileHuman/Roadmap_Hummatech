@@ -16,7 +16,6 @@ class SiswaController extends Controller
             return response()->json([
                 'data' => $data
             ], 200);
-
         } catch (Exception $e) {
             return response()->json([
                 'message' => 'Terjadi kesalahan saat mengambil data'
@@ -42,26 +41,17 @@ class SiswaController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'nisn'  => 'required|string',
+            'nisn'  => 'required|string|unique:siswas,nisn',
             'nama'  => 'required|string',
-            'kelas' => 'required|string'
+            'kelas' => 'required|string',
         ]);
-
-        $cekSiswa = ModelSiswa::where('nisn', $validated['nisn'])->first();
-
-        if ($cekSiswa) {
-            return response()->json([
-                'status' => 'error',
-                'message' => 'Data siswa dengan NISN tersebut sudah ada'
-            ], 422);
-        }
 
         $siswa = ModelSiswa::create($validated);
 
         return response()->json([
-            'status' => 'success',
+            'status'  => 'success',
             'message' => 'Data telah disimpan',
-            'data' => $siswa
+            'data'    => $siswa,
         ], 201);
     }
 
