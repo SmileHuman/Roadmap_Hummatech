@@ -55,33 +55,52 @@ class SiswaController extends Controller
         ], 201);
     }
 
-    public function update(int $id, array $data)
-    {
-        $siswa = ModelSiswa::find($id);
-
-        if (!$siswa) {
-            return response()->json([
-                'message' => 'data tidak ditemukan'
-            ]);
-        }
-
-        $siswa->update($data);
-
-        return $siswa->fresh();
+    public function update(Request $request, string $id)
+{
+    if (!ctype_digit($id)) {
+        return response()->json([
+            'message' => 'ID tidak valid'
+        ], 400);
     }
+
+    $data = $request->validate([
+        'nisn' => 'sometimes|required|string|unique:data_siswa,nisn',
+        'nama' => 'sometimes|required|string|max:255',
+        'nilai' => 'sometimes|required|numeric|min:0|max:100',
+    ]);
+
+    $siswa = $this->service->update((int) $id, $data);
+
+    if (!$siswa) {
+        return response()->json([
+            'message' => 'Data tidak ditemukan'
+        ], 404);
+    }
+
+    return response()->json([
+        'message' => 'Data berhasil diperbarui',
+        'data' => $siswa
+    ], 200);
+}
 
     public function destroy(string $id)
-    {
-        $deleted = $this->service->delete((int) $id);
-
-        if (!$deleted) {
-            return response()->json([
-                'message' => 'Data tidak ditemukan'
-            ], 404);
-        }
-
+{
+    if (!ctype_digit($id)) {
         return response()->json([
-            'message' => 'Data berhasil dihapus'
-        ]);
+            'message' => 'ID tidak valid'
+        ], 400);
     }
+
+    $deleted = $this->service->delete((int) $id);
+
+    if (!$deleted) {
+        return response()->json([
+            'message' => 'Data tidak ditemukan'
+        ], 404);
+    }
+
+    return response()->json([
+        'message' => 'Data berhasil dihapus'
+    ], 200);
+}
 }
