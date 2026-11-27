@@ -2,25 +2,32 @@
 
 namespace App\Http\Controllers;
 
-use App\Handlers\SiswaHandler;
+use App\Services\SiswaService;
+use App\Models\ModelSiswa;
 use Illuminate\Http\Request;
 
 class SiswaController extends Controller
 {
     public function __construct(
-        private SiswaHandler $handler
+        private SiswaService $service
     ) {}
 
     public function index()
     {
         return response()->json([
-            'data' => $this->handler->index()
+            'data' => $this->service->index()
         ]);
     }
 
     public function show(string $id)
     {
-        $data = $this->handler->show((int) $id);
+        if (!ctype_digit($id)) {
+            return response()->json([
+                'message' => 'Data tidak ditemukan'
+            ], 404);
+        }
+
+        $data = $this->service->show((int) $id);
 
         if (!$data) {
             return response()->json([
@@ -36,40 +43,36 @@ class SiswaController extends Controller
     public function store(Request $request)
     {
         $data = $request->validate([
-            'nama' => 'required|string',
-            'nilai' => 'required|numeric'
+            'nisn' => 'required|string|unique:data_siswa,nisn',
+            'nama' => 'required|string|max:255',
+            'nilai' => 'required|numeric|min:0|max:100',
         ]);
+        
+        $this->service->store($data);
 
         return response()->json([
-            'message' => 'Data berhasil ditambahkan',
-            'data' => $this->handler->store($data)
+            'message' => 'Data berhasil ditambahkan'
         ], 201);
     }
 
-    public function update(Request $request, string $id)
+    public function update(int $id, array $data)
     {
-        $data = $request->validate([
-            'nama' => 'required|string',
-            'nilai' => 'required|numeric'
-        ]);
-
-        $siswa = $this->handler->update((int) $id, $data);
+        $siswa = ModelSiswa::find($id);
 
         if (!$siswa) {
             return response()->json([
-                'message' => 'Data tidak ditemukan'
-            ], 404);
+                'message' => 'data tidak ditemukan'
+            ]);
         }
 
-        return response()->json([
-            'message' => 'Data berhasil diperbarui',
-            'data' => $siswa
-        ]);
+        $siswa->update($data);
+
+        return $siswa->fresh();
     }
 
     public function destroy(string $id)
     {
-        $deleted = $this->handler->delete((int) $id);
+        $deleted = $this->service->delete((int) $id);
 
         if (!$deleted) {
             return response()->json([

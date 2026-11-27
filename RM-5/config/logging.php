@@ -1,8 +1,8 @@
 <?php
 
-use Monolog\Handler\NullHandler;
-use Monolog\Handler\StreamHandler;
-use Monolog\Handler\SyslogUdpHandler;
+use Monolog\service\Nullservice;
+use Monolog\service\Streamservice;
+use Monolog\service\SyslogUdpservice;
 use Monolog\Processor\PsrLogMessageProcessor;
 
 return [
@@ -43,7 +43,7 @@ return [
     |
     | Here you may configure the log channels for your application. Laravel
     | utilizes the Monolog PHP logging library, which includes a variety
-    | of powerful log handlers and formatters that you're free to use.
+    | of powerful log services and formatters that you're free to use.
     |
     | Available drivers: "single", "daily", "monthly", "slack", "syslog",
     |                    "errorlog", "monolog", "custom", "stack"
@@ -93,8 +93,8 @@ return [
         'papertrail' => [
             'driver' => 'monolog',
             'level' => env('LOG_LEVEL', 'debug'),
-            'handler' => env('LOG_PAPERTRAIL_HANDLER', SyslogUdpHandler::class),
-            'handler_with' => [
+            'service' => env('LOG_PAPERTRAIL_service', SyslogUdpservice::class),
+            'service_with' => [
                 'host' => env('PAPERTRAIL_URL'),
                 'port' => env('PAPERTRAIL_PORT'),
                 'connectionString' => 'tls://'.env('PAPERTRAIL_URL').':'.env('PAPERTRAIL_PORT'),
@@ -105,8 +105,8 @@ return [
         'stderr' => [
             'driver' => 'monolog',
             'level' => env('LOG_LEVEL', 'debug'),
-            'handler' => StreamHandler::class,
-            'handler_with' => [
+            'service' => Streamservice::class,
+            'service_with' => [
                 'stream' => 'php://stderr',
             ],
             'formatter' => env('LOG_STDERR_FORMATTER'),
@@ -128,7 +128,7 @@ return [
 
         'null' => [
             'driver' => 'monolog',
-            'handler' => NullHandler::class,
+            'service' => Nullservice::class,
         ],
 
         'emergency' => [

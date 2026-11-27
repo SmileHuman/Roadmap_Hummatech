@@ -9,7 +9,9 @@ class ModelSiswa extends Model
     protected $table = 'data_siswa';
 
     protected $fillable = [
+        'nisn',
         'nama',
-        'nilai'
+        'nilai',
+        'status_kompetensi'
     ];
 }

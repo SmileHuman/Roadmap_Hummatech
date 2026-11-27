@@ -681,7 +681,7 @@
                 "psr/log": "^1.1 || ^2.0 || ^3.0"
             },
             "suggest": {
-                "ext-curl": "Required for CURL handler support",
+                "ext-curl": "Required for CURL service support",
                 "ext-intl": "Required for Internationalized Domain Name (IDN) support",
                 "psr/log": "Required for using the Log middleware"
             },
@@ -886,7 +886,7 @@
                 "phpunit/phpunit": "^9.6.34"
             },
             "suggest": {
-                "laminas/laminas-httphandlerrunner": "Emit PSR-7 responses"
+                "laminas/laminas-httpservicerunner": "Emit PSR-7 responses"
             },
             "type": "library",
             "extra": {
@@ -1106,7 +1106,7 @@
                 "psr/simple-cache": "^1.0 || ^2.0 || ^3.0",
                 "ramsey/uuid": "^4.7",
                 "symfony/console": "^7.4.0 || ^8.0.0",
-                "symfony/error-handler": "^7.4.0 || ^8.0.0",
+                "symfony/error-service": "^7.4.0 || ^8.0.0",
                 "symfony/finder": "^7.4.0 || ^8.0.0",
                 "symfony/http-foundation": "^7.4.0 || ^8.0.0",
                 "symfony/http-kernel": "^7.4.0 || ^8.0.0",
@@ -2147,7 +2147,7 @@
                 "doctrine/couchdb": "Allow sending log messages to a CouchDB server",
                 "elasticsearch/elasticsearch": "Allow sending log messages to an Elasticsearch server via official client",
                 "ext-amqp": "Allow sending log messages to an AMQP server (1.0+ required)",
-                "ext-curl": "Required to send log messages using the IFTTTHandler, the LogglyHandler, the SendGridHandler, the SlackWebhookHandler or the TelegramBotHandler",
+                "ext-curl": "Required to send log messages using the IFTTTservice, the Logglyservice, the SendGridservice, the SlackWebhookservice or the TelegramBotservice",
                 "ext-mbstring": "Allow to work properly with unicode symbols",
                 "ext-mongodb": "Allow sending log messages to a MongoDB server (via driver)",
                 "ext-openssl": "Required to send log messages using SSL",
@@ -3648,16 +3648,16 @@
             "time": "2026-06-05T06:23:12+00:00"
         },
         {
-            "name": "symfony/error-handler",
+            "name": "symfony/error-service",
             "version": "v7.4.20",
             "source": {
                 "type": "git",
-                "url": "https://github.com/symfony/error-handler.git",
+                "url": "https://github.com/symfony/error-service.git",
                 "reference": "82239fe00f7cdc9f17c4166fff4ebdc22bd26ec0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/error-handler/zipball/82239fe00f7cdc9f17c4166fff4ebdc22bd26ec0",
+                "url": "https://api.github.com/repos/symfony/error-service/zipball/82239fe00f7cdc9f17c4166fff4ebdc22bd26ec0",
                 "reference": "82239fe00f7cdc9f17c4166fff4ebdc22bd26ec0",
                 "shasum": ""
             },
@@ -3684,7 +3684,7 @@
             "type": "library",
             "autoload": {
                 "psr-4": {
-                    "Symfony\\Component\\ErrorHandler\\": ""
+                    "Symfony\\Component\\Errorservice\\": ""
                 },
                 "exclude-from-classmap": [
                     "/Tests/"
@@ -3707,7 +3707,7 @@
             "description": "Provides tools to manage errors and ease debugging PHP code",
             "homepage": "https://symfony.com",
             "support": {
-                "source": "https://github.com/symfony/error-handler/tree/v7.4.20"
+                "source": "https://github.com/symfony/error-service/tree/v7.4.20"
             },
             "funding": [
                 {
@@ -3759,7 +3759,7 @@
                 "psr/log": "^1|^2|^3",
                 "symfony/config": "^6.4|^7.0|^8.0",
                 "symfony/dependency-injection": "^6.4|^7.0|^8.0",
-                "symfony/error-handler": "^6.4|^7.0|^8.0",
+                "symfony/error-service": "^6.4|^7.0|^8.0",
                 "symfony/expression-language": "^6.4|^7.0|^8.0",
                 "symfony/framework-bundle": "^6.4|^7.0|^8.0",
                 "symfony/http-foundation": "^6.4|^7.0|^8.0",
@@ -4062,7 +4062,7 @@
                 "php": ">=8.2",
                 "psr/log": "^1|^2|^3",
                 "symfony/deprecation-contracts": "^2.5|^3",
-                "symfony/error-handler": "^6.4|^7.0|^8.0",
+                "symfony/error-service": "^6.4|^7.0|^8.0",
                 "symfony/event-dispatcher": "^7.3|^8.0",
                 "symfony/http-foundation": "^7.4|^8.0",
                 "symfony/polyfill-ctype": "^1.8"
